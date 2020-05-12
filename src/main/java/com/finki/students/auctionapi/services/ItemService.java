@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -25,23 +27,24 @@ public class ItemService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Item saveOrUpdateItem(ItemRequest itemRequest) throws Exception {
-        User seller = userRepository.findById(Long.parseLong(itemRequest.getSellerId())).orElseThrow(() -> new Exception());
+    public Item saveOrUpdateItem(ItemRequest itemRequest, String username) throws Exception {
+        User seller = userRepository.findByUsername(username);
         Category category = categoryRepository.findById(itemRequest.getCategoryName()).orElseThrow(() -> new Exception());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Item item = new Item(
                 0L,
                 itemRequest.getBidName(),
                 Double.parseDouble(itemRequest.getStartPrice()),
-                itemRequest.getDescription(),
-                Integer.parseInt(itemRequest.getItemNo()),
-                itemRequest.getTitle(),
-                simpleDateFormat.parse(itemRequest.getStart()),
                 simpleDateFormat.parse(itemRequest.getEnd()),
                 category,
                 seller,
                 new Date(),
                 null);
         return itemRepository.save(item);
+    }
+
+    public List<Item> getAllItems() {
+        List<Item> items = itemRepository.findAll();
+        return items.stream().filter((item -> item.getEnd().after(new Date()))).collect(Collectors.toList());
     }
 }

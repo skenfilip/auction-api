@@ -30,8 +30,6 @@ public class UserService {
                     userRequest.getUsername(),
                     userRequest.getFullName(),
                     passwordEncoder.encode(userRequest.getPassword()),
-                    userRequest.getPhoneNumber(),
-                    userRequest.getHomeAddress(),
                     null,
                     null,
                     new Date(),
@@ -41,7 +39,10 @@ public class UserService {
         } catch (Exception e) {
             throw new UsernameAlreadyExistsException("Username '" + userRequest.getUsername() + "' already exists");
         }
-
     }
 
+    public User getUser(String username){
+        User user = userRepository.findByUsername(username);
+        return user;
+    }
 }

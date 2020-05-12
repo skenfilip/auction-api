@@ -25,12 +25,6 @@ public class Item {
     private String bidName;
     @Column(name = "start_price")
     private Double startPrice;
-    private String description;
-    @Column(name = "item_no")
-    private Integer itemNo;
-    private String title;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date start;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date end;
     @ManyToOne

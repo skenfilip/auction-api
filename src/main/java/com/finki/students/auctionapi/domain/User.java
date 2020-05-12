@@ -27,10 +27,6 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
     private String password;
-    @Column(name = "phone_number")
-    private String phoneNumber;
-    @Column(name = "home_address")
-    private String homeAddress;
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "positive_feedback",

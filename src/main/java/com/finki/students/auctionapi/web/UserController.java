@@ -15,15 +15,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 import static com.finki.students.auctionapi.security.SecurityConstants.TOKEN_PREFIX;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -71,6 +69,13 @@ public class UserController {
 
         User user = userService.saveOrUpdateUser(userRequest);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getUser(@RequestParam(name = "username") String username) {
+
+        User user = userService.getUser(username);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
 }

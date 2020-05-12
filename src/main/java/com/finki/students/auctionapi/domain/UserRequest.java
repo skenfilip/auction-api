@@ -21,8 +21,4 @@ public class UserRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must contain at least 8 characters")
     private String password;
-    @NotBlank(message = "Phone number is required")
-    private String phoneNumber;
-    @NotBlank(message = "Home address is required")
-    private String homeAddress;
 }

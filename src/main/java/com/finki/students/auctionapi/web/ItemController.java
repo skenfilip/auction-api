@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/item")
 public class ItemController {
@@ -26,15 +26,22 @@ public class ItemController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewItem(@Valid @RequestBody ItemRequest itemRequest, BindingResult result) throws Exception {
+    public ResponseEntity<?> createNewItem(@Valid @RequestBody ItemRequest itemRequest, BindingResult result, Principal principal) throws Exception {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) {
             return errorMap;
         }
 
-        Item item = itemService.saveOrUpdateItem(itemRequest);
+        Item item = itemService.saveOrUpdateItem(itemRequest, principal.getName());
         return new ResponseEntity<Item>(item, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllItems() throws Exception {
+
+        List<Item> items = itemService.getAllItems();
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
     }
 
 }

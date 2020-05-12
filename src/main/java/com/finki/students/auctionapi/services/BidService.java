@@ -10,7 +10,9 @@ import com.finki.students.auctionapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BidService {
@@ -34,5 +36,11 @@ public class BidService {
                 user,
                 item);
         return bidRepository.save(bid);
+    }
+
+    public Bid findLatestBidById(Long itemId) throws Exception {
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new Exception());
+        List<Bid> bids = bidRepository.findByItem(item);
+        return bids.stream().max(Comparator.comparing(Bid::getTime)).get();
     }
 }
