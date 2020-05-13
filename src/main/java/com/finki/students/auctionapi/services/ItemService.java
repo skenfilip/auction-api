@@ -47,4 +47,10 @@ public class ItemService {
         List<Item> items = itemRepository.findAll();
         return items.stream().filter((item -> item.getEnd().after(new Date()))).collect(Collectors.toList());
     }
+
+    public List<Item> getCategoryItems(String username) {
+        Category category = categoryRepository.findById(username).get();
+        List<Item> items = itemRepository.findAllByCategory(category);
+        return items.stream().filter((item -> item.getEnd().after(new Date()))).collect(Collectors.toList());
+    }
 }

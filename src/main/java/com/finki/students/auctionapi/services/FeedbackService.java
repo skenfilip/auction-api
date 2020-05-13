@@ -33,4 +33,14 @@ public class FeedbackService {
         user.getNegativeItems().add(item);
         return userRepository.save(user);
     }
+
+    public int getPositiveFeedback(Long userId) throws Exception{
+        User user = userRepository.findById(userId).orElseThrow(() -> new Exception());
+        return user.getPositiveItems().size();
+    }
+
+    public int getNegativeFeedback(Long userId) throws Exception{
+        User user = userRepository.findById(userId).orElseThrow(() -> new Exception());
+        return user.getNegativeItems().size();
+    }
 }

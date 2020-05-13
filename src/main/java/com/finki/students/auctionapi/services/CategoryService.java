@@ -5,6 +5,8 @@ import com.finki.students.auctionapi.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -13,5 +15,9 @@ public class CategoryService {
 
     public Category saveCategory(Category category) {
         return categoryRepository.save(category);
+    }
+
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 }

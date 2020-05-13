@@ -44,4 +44,11 @@ public class ItemController {
         return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
     }
 
+    @GetMapping("")
+    public ResponseEntity<?> getAllItems(@RequestParam(name = "category") String category) throws Exception {
+
+        List<Item> items = itemService.getCategoryItems(category);
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+    }
+
 }

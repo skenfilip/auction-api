@@ -1,16 +1,15 @@
 package com.finki.students.auctionapi.web;
 
+import com.finki.students.auctionapi.domain.FeedbackRequest;
 import com.finki.students.auctionapi.domain.User;
 import com.finki.students.auctionapi.services.FeedbackService;
 import com.finki.students.auctionapi.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/feedback")
 public class FeedbackController {
@@ -33,5 +32,14 @@ public class FeedbackController {
         else if (outcome.equals("NEGATIVE"))
             user = feedbackService.saveNegativeFeedback(userId, itemId);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user_id/{userId}")
+    public ResponseEntity<?> getFeedbacks(
+            @PathVariable("userId") Long userId) throws Exception{
+        Integer positiveFeedback = feedbackService.getPositiveFeedback(userId);
+        Integer negativeFeedback = feedbackService.getNegativeFeedback(userId);
+        FeedbackRequest feedbackRequest = new FeedbackRequest(positiveFeedback, negativeFeedback);
+        return new ResponseEntity<FeedbackRequest>(feedbackRequest, HttpStatus.OK);
     }
 }
